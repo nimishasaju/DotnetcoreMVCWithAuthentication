@@ -1,0 +1,35 @@
+@model DotnetcoreMVCWithAuthentication.Models.UserCredentials
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form asp-action="Login" method="post">
+    <div>
+        <label>Username</label>
+        <input asp-for="Username" />
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="Password" type="password" />
+    </div>
+    <button type="submit">Login</button>
+    @Html.AntiForgeryToken()
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="color:red">
+        @foreach (var m in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <div>@m.ErrorMessage</div>
+        }
+    </div>
+}
+
+@if (ViewBag.Token != null)
+{
+    <h3>JWT Token (copy and use in Authorization header as "Bearer &lt;token&gt;")</h3>
+    <textarea style="width:100%;height:120px;">@ViewBag.Token</textarea>
+}
